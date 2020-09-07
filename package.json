@@ -1,0 +1,23 @@
+{
+  "name": "hiilta-app",
+  "version": "1.0.0",
+  "description": "Une app sur la consommation carbone.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RedDansTaGueule/Hiilta.git"
+  },
+  "author": "RedDansTaGueule",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RedDansTaGueule/Hiilta/issues"
+  },
+  "homepage": "https://github.com/RedDansTaGueule/Hiilta#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

@@ -20,5 +20,9 @@ router.get("/subscribe", function (req, res) {
     res.render("subscribe");
 });
 
+router.get("/transport", function (req, res) {
+    res.render("transport");
+});
+
 module.exports = router;
 

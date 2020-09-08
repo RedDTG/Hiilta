@@ -16,5 +16,9 @@ router.get("/welcome", function (req, res) {
     res.render("welcome");
 });
 
+router.get("/subscribe", function (req, res) {
+    res.render("subscribe");
+});
+
 module.exports = router;
 

@@ -20,5 +20,9 @@ router.get("/subscribe", function (req, res) {
     res.render("subscribe");
 });
 
+router.get("/api-tan", function (req, res) {
+    res.render("api-tan");
+});
+
 module.exports = router;
 

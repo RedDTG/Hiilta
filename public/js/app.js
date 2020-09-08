@@ -18051,6 +18051,28 @@ module.exports = g;
 
 /***/ }),
 
+/***/ "./src/js/api-tan.js":
+/*!***************************!*\
+  !*** ./src/js/api-tan.js ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var callBackGetSuccess = function callBackGetSuccess(data) {
+  console.log("donnees api", data);
+};
+
+window.buttonAPI = function () {
+  var url = "https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_tan-arrets-horaires-circuits&q=&lang=FR";
+  $.get(url, callBackGetSuccess).done(function () {//alert( "second success" );
+  }).fail(function () {
+    alert("error");
+  }).always(function () {//alert ( "finished" );
+  });
+};
+
+/***/ }),
+
 /***/ "./src/js/app.js":
 /*!***********************!*\
   !*** ./src/js/app.js ***!
@@ -18063,6 +18085,8 @@ __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js");
 
 __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
+
+__webpack_require__(/*! ./api-tan */ "./src/js/api-tan.js");
 
 /***/ }),
 

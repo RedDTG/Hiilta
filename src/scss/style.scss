@@ -1,0 +1,57 @@
+.container {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-size: 80px;
+}
+
+.container>p {
+  font-family: 'Righteous', cursive;
+  margin: 0;
+  padding: 0;
+}
+
+.container>img {
+  padding: 75px;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+  margin: 75px;
+}
+
+.login-buttons {
+  display: flex;
+  flex-flow: column;
+  margin: 200px;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-buttons>button {
+  width: 500px;
+  color: #1d1d1d;
+  font-size: 40px;
+  padding: 20px;
+}
+
+.login-buttons>a {
+  margin: 20px;
+  width: 500px;
+}
+
+.form-control {
+  font-size: 50px;
+  width: 500px;
+
+}
+
+.form-group>label {
+  font-size: 35px;
+}
+
+

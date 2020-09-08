@@ -8,8 +8,12 @@ router.get("/", function (req, res) {
     res.render("index");
 });
 
-router.get("/home", function (req, res) {
-    res.render("home");
+router.get("/loading", function (req, res) {
+    res.render("loading");
+});
+
+router.get("/welcome", function (req, res) {
+    res.render("welcome");
 });
 
 module.exports = router;

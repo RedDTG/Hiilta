@@ -1,3 +1,35 @@
 @import "variables";
 
 @import "~bootstrap";
+
+.container {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-size: 80px;
+}
+
+.container>p {
+  font-family: 'Righteous', cursive;
+  margin: 0;
+  padding: 0;
+}
+
+.container>img {
+  padding: 75px;
+}
+
+.login-buttons {
+  display: flex;
+  flex-flow: column;
+  margin: 200px;
+  align-items: center;
+  justify-content: center;
+
+}
+.login-buttons>a {
+  margin: 20px;
+  width: 500px;
+}

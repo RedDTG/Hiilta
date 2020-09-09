@@ -18051,6 +18051,29 @@ module.exports = g;
 
 /***/ }),
 
+/***/ "./src/js/api_google.js":
+/*!******************************!*\
+  !*** ./src/js/api_google.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// Initialize and add the map
+function initMap() {
+  // The location of Uluru
+  var uluru = {
+    lat: -25.344,
+    lng: 131.036
+  }; // The map, centered at Uluru
+
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 4,
+    center: uluru
+  });
+}
+
+/***/ }),
+
 /***/ "./src/js/app.js":
 /*!***********************!*\
   !*** ./src/js/app.js ***!
@@ -18063,6 +18086,8 @@ __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js");
 
 __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
+
+__webpack_require__(/*! ./api_google */ "./src/js/api_google.js");
 
 /***/ }),
 
@@ -18078,14 +18103,15 @@ __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap
 /***/ }),
 
 /***/ 0:
-/*!*************************************************!*\
-  !*** multi ./src/js/app.js ./src/scss/app.scss ***!
-  \*************************************************/
+/*!*********************************************************************!*\
+  !*** multi ./src/js/app.js ./src/js/api_google ./src/scss/app.scss ***!
+  \*********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\Users\AntoineD\Documents\EPSI\B2\Workshop\hiilta-app\src\js\app.js */"./src/js/app.js");
-module.exports = __webpack_require__(/*! D:\Users\AntoineD\Documents\EPSI\B2\Workshop\hiilta-app\src\scss\app.scss */"./src/scss/app.scss");
+__webpack_require__(/*! D:\EPSI\workshopjs\src\js\app.js */"./src/js/app.js");
+__webpack_require__(/*! D:\EPSI\workshopjs\src\js\api_google */"./src/js/api_google.js");
+module.exports = __webpack_require__(/*! D:\EPSI\workshopjs\src\scss\app.scss */"./src/scss/app.scss");
 
 
 /***/ })

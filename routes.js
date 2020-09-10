@@ -27,5 +27,13 @@ router.get("/transport", function (req, res) {
 router.get("/voiture", function (req, res) {
     res.render("voiture");
 });
+
+router.get("/velo", function (req, res) {
+    res.render("velo");
+});
+
+router.get("/tramway", function (req, res) {
+    res.render("tramway");
+});
 module.exports = router;
 

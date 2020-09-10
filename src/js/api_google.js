@@ -5,6 +5,14 @@ window.initMap = function() {
             zoom: 6,
             mapTypeId: "roadmap"
         });
+
+   var directionsService = new google.maps.DirectionsService();
+   var directionsRenderer = new google.maps.DirectionsRenderer({
+       draggable: true,
+        map: map,
+        panel: document.getElementById('right-panel')
+    });
+
         infoWindow = new google.maps.InfoWindow;
 
     const input = document.getElementById("pac-input");
@@ -42,6 +50,9 @@ window.initMap = function() {
                 scaledSize: new google.maps.Size(25, 25)
             };
 
+
+            // placer un marqueur sur l'endroit rechercher //
+
             markers.push(
                 new google.maps.Marker({
                     map,
@@ -51,36 +62,60 @@ window.initMap = function() {
                 })
             );
 
+
+            // POUR LA VUE INTERNE //
+
             if (place.geometry.viewport) {
                 // Only geocodes have viewport.
                 bounds.union(place.geometry.viewport);
             } else {
                 bounds.extend(place.geometry.location);
             }
+
+
+
         });
         map.fitBounds(bounds);
     });
 
-        // Try HTML5 geolocation.
+        // GEOLOCALISATION //
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
-                var pos = {
+                const pos = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
 
                 infoWindow.setPosition(pos);
+                let marker =  new google.maps.Marker({position: pos,
+                                                      map: map});
                 infoWindow.setContent('Location found.');
                 infoWindow.open(map);
                 map.setCenter(pos);
-            }, function() {
+            },
+
+
+
+                function() {
                 handleLocationError(true, infoWindow, map.getCenter());
             });
-        } else {
+        }
+        else {
             // Browser doesn't support Geolocation
             handleLocationError(false, infoWindow, map.getCenter());
         }
-    }
+
+
+
+  directionsRenderer.addListener('directions_changed', function() {
+    computeTotalDistance(directionsRenderer.getDirections());
+ })
+    displayRoute(places, pos, directionsService,
+        directionsRenderer);
+
+
+}
 
     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
         infoWindow.setPosition(pos);
@@ -89,3 +124,18 @@ window.initMap = function() {
             'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
     }
+
+function displayRoute(origin, destination, service, display) {
+    service.route({
+        origin: origin,
+        destination: destination,
+        travelMode: 'DRIVING',
+        avoidTolls: true
+    }, function(response, status) {
+        if (status === 'OK') {
+            display.setDirections(response);
+        } else {
+            alert('Could not display directions due to: ' + status);
+        }
+    });
+}

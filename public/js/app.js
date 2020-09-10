@@ -18069,6 +18069,12 @@ window.initMap = function () {
     zoom: 6,
     mapTypeId: "roadmap"
   });
+  var directionsService = new google.maps.DirectionsService();
+  var directionsRenderer = new google.maps.DirectionsRenderer({
+    draggable: true,
+    map: map,
+    panel: document.getElementById('right-panel')
+  });
   infoWindow = new google.maps.InfoWindow();
   var input = document.getElementById("pac-input");
   var searchBox = new google.maps.places.SearchBox(input);
@@ -18101,13 +18107,14 @@ window.initMap = function () {
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(17, 34),
         scaledSize: new google.maps.Size(25, 25)
-      };
+      }; // placer un marqueur sur l'endroit rechercher //
+
       markers.push(new google.maps.Marker({
         map: map,
         icon: icon,
         title: place.name,
         position: place.geometry.location
-      }));
+      })); // POUR LA VUE INTERNE //
 
       if (place.geometry.viewport) {
         // Only geocodes have viewport.
@@ -18117,7 +18124,7 @@ window.initMap = function () {
       }
     });
     map.fitBounds(bounds);
-  }); // Try HTML5 geolocation.
+  }); // GEOLOCALISATION //
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function (position) {
@@ -18126,6 +18133,10 @@ window.initMap = function () {
         lng: position.coords.longitude
       };
       infoWindow.setPosition(pos);
+      var marker = new google.maps.Marker({
+        position: pos,
+        map: map
+      });
       infoWindow.setContent('Location found.');
       infoWindow.open(map);
       map.setCenter(pos);
@@ -18136,12 +18147,32 @@ window.initMap = function () {
     // Browser doesn't support Geolocation
     handleLocationError(false, infoWindow, map.getCenter());
   }
+
+  directionsRenderer.addListener('directions_changed', function () {
+    computeTotalDistance(directionsRenderer.getDirections());
+  });
+  displayRoute(places, pos, directionsService, directionsRenderer);
 };
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.setPosition(pos);
   infoWindow.setContent(browserHasGeolocation ? 'Error: The Geolocation service failed.' : 'Error: Your browser doesn\'t support geolocation.');
   infoWindow.open(map);
+}
+
+function displayRoute(origin, destination, service, display) {
+  service.route({
+    origin: origin,
+    destination: destination,
+    travelMode: 'DRIVING',
+    avoidTolls: true
+  }, function (response, status) {
+    if (status === 'OK') {
+      display.setDirections(response);
+    } else {
+      alert('Could not display directions due to: ' + status);
+    }
+  });
 }
 
 /***/ }),

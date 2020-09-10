@@ -1,141 +1,124 @@
-var map, infoWindow;
+"use strict";
+
+// This example requires the Places library. Include the libraries=places
+// parameter when you first load the API. For example:
+// <script
+// src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 window.initMap = function() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: -34.397, lng: 150.644},
-            zoom: 6,
-            mapTypeId: "roadmap"
-        });
-
-   var directionsService = new google.maps.DirectionsService();
-   var directionsRenderer = new google.maps.DirectionsRenderer({
-       draggable: true,
-        map: map,
-        panel: document.getElementById('right-panel')
+    const map = new google.maps.Map(document.getElementById("map"), {
+        mapTypeControl: false,
+        center: {
+            lat: -33.8688,
+            lng: 151.2195
+        },
+        zoom: 13
     });
+    new AutocompleteDirectionsHandler(map);
+}
 
-        infoWindow = new google.maps.InfoWindow;
+class AutocompleteDirectionsHandler {
+    constructor(map) {
+        this.map = map;
+        this.originPlaceId = "";
+        this.destinationPlaceId = "";
+        this.travelMode = google.maps.TravelMode.WALKING;
+        this.directionsService = new google.maps.DirectionsService();
+        this.directionsRenderer = new google.maps.DirectionsRenderer();
+        this.directionsRenderer.setMap(map);
+        const originInput = document.getElementById("origin-input");
+        const destinationInput = document.getElementById("destination-input");
+        const modeSelector = document.getElementById("mode-selector");
+        const originAutocomplete = new google.maps.places.Autocomplete(
+            originInput
+        ); // Specify just the place data fields that you need.
 
-    const input = document.getElementById("pac-input");
-    const searchBox = new google.maps.places.SearchBox(input);
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        originAutocomplete.setFields(["place_id"]);
+        const destinationAutocomplete = new google.maps.places.Autocomplete(
+            destinationInput
+        ); // Specify just the place data fields that you need.
 
-    map.addListener("bounds_changed", () => {
-        searchBox.setBounds(map.getBounds());
-    });
-    let markers = [];
+        destinationAutocomplete.setFields(["place_id"]);
+        this.setupClickListener(
+            "changemode-walking",
+            google.maps.TravelMode.WALKING
+        );
+        this.setupClickListener(
+            "changemode-transit",
+            google.maps.TravelMode.TRANSIT
+        );
+        this.setupClickListener(
+            "changemode-driving",
+            google.maps.TravelMode.DRIVING
+        );
+        this.setupClickListener(
+            "changemode-cycling",
+            google.maps.TravelMode.CYCLING
+        );
+        this.setupPlaceChangedListener(originAutocomplete, "ORIG");
+        this.setupPlaceChangedListener(destinationAutocomplete, "DEST");
+        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(
+            originInput
+        );
+        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(
+            destinationInput
+        );
+        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(
+            modeSelector
+        );
+    } // Sets a listener on a radio button to change the filter type on Places
+    // Autocomplete.
 
-    searchBox.addListener("places_changed", () => {
-        const places = searchBox.getPlaces();
-
-        if (places.length == 0) {
-            return;
-        }
-
-        markers.forEach(marker => {
-            marker.setMap(null);
+    setupClickListener(id, mode) {
+        const radioButton = document.getElementById(id);
+        radioButton.addEventListener("click", () => {
+            this.travelMode = mode;
+            this.route();
         });
-        markers = [];
-        const bounds = new google.maps.LatLngBounds();
-        places.forEach(place => {
-            if (!place.geometry) {
-                console.log("Returned place contains no geometry");
+    }
+
+    setupPlaceChangedListener(autocomplete, mode) {
+        autocomplete.bindTo("bounds", this.map);
+        autocomplete.addListener("place_changed", () => {
+            const place = autocomplete.getPlace();
+
+            if (!place.place_id) {
+                window.alert("Please select an option from the dropdown list.");
                 return;
             }
 
-            const icon = {
-                url: place.icon,
-                size: new google.maps.Size(71, 71),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(17, 34),
-                scaledSize: new google.maps.Size(25, 25)
-            };
-
-
-            // placer un marqueur sur l'endroit rechercher //
-
-            markers.push(
-                new google.maps.Marker({
-                    map,
-                    icon,
-                    title: place.name,
-                    position: place.geometry.location
-                })
-            );
-
-
-            // POUR LA VUE INTERNE //
-
-            if (place.geometry.viewport) {
-                // Only geocodes have viewport.
-                bounds.union(place.geometry.viewport);
+            if (mode === "ORIG") {
+                this.originPlaceId = place.place_id;
             } else {
-                bounds.extend(place.geometry.location);
+                this.destinationPlaceId = place.place_id;
             }
 
-
-
+            this.route();
         });
-        map.fitBounds(bounds);
-    });
-
-        // GEOLOCALISATION //
-
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                const pos = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
-
-                infoWindow.setPosition(pos);
-                let marker =  new google.maps.Marker({position: pos,
-                                                      map: map});
-                infoWindow.setContent('Location found.');
-                infoWindow.open(map);
-                map.setCenter(pos);
-            },
-
-
-
-                function() {
-                handleLocationError(true, infoWindow, map.getCenter());
-            });
-        }
-        else {
-            // Browser doesn't support Geolocation
-            handleLocationError(false, infoWindow, map.getCenter());
-        }
-
-
-
-  directionsRenderer.addListener('directions_changed', function() {
-    computeTotalDistance(directionsRenderer.getDirections());
- })
-    displayRoute(places, pos, directionsService,
-        directionsRenderer);
-
-
-}
-
-    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-            'Error: The Geolocation service failed.' :
-            'Error: Your browser doesn\'t support geolocation.');
-        infoWindow.open(map);
     }
 
-function displayRoute(origin, destination, service, display) {
-    service.route({
-        origin: origin,
-        destination: destination,
-        travelMode: 'DRIVING',
-        avoidTolls: true
-    }, function(response, status) {
-        if (status === 'OK') {
-            display.setDirections(response);
-        } else {
-            alert('Could not display directions due to: ' + status);
+    route() {
+        if (!this.originPlaceId || !this.destinationPlaceId) {
+            return;
         }
-    });
+
+        const me = this;
+        this.directionsService.route(
+            {
+                origin: {
+                    placeId: this.originPlaceId
+                },
+                destination: {
+                    placeId: this.destinationPlaceId
+                },
+                travelMode: this.travelMode
+            },
+            (response, status) => {
+                if (status === "OK") {
+                    me.directionsRenderer.setDirections(response);
+                } else {
+                    window.alert("Directions request failed due to " + status);
+                }
+            }
+        );
+    }
 }

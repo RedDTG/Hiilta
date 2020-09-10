@@ -1,63 +1,20 @@
-<%- include('_header'); -%>
+<%- include ('_header-nonav') -%>
+<div class="container">
+    <img src="img/logo.png" alt="logo.png" width="90%">
+    <p>Bienvenue !</p>
 
-<main id="main">
+    <div class="login-buttons">
+        <a href="/subscribe" class="btn btn-hiilta btn-lg">M'inscrire</a>
+        <a href="/login" class="btn btn-hiilta btn-lg">Me connecter</a>
+    </div>
 
-    <section id="jumbotron" class="py-5">
-        <div class="container">
+</div>
 
-            <div class="row">
-                <div class="col-lg-6 align-self-center">
-                    <div>
-                    <h1>Titre de ma page</h1>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aspernatur assumenda at aut commodi
-                        corporis debitis dignissimos distinctio dolorum eveniet fuga illo iste labore, libero nesciunt
-                        nisi sed vitae voluptatem.</p>
-                    <a href="/" class="btn btn-outline-ronan">Click me !</a>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <img src="https://placehold.it/500x350/CB1919/ffffff?text=Coucou" alt="" loading="lazy" width="500" height="350">
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <section id="values" class="py-5">
-        <div class="container">
-
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="card card-body">
-                        <h3 class=" h4 card-title">Coucou les gens</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi aperiam asperiores, aut cum, dolore eum exercitationem illum impedit pariatur reprehenderit tenetur vero. Itaque, quaerat, vitae.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="card card-body">
-                        <h3 class=" h4 card-title">Coucou les gens</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi aperiam asperiores, aut cum, dolore eum exercitationem illum impedit pariatur reprehenderit tenetur vero. Itaque, quaerat, vitae.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="card card-body">
-                        <h3 class=" h4 card-title">Coucou les gens</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi aperiam asperiores, aut cum, dolore eum exercitationem illum impedit pariatur reprehenderit tenetur vero. Itaque, quaerat, vitae.</p>
-                    </div>
-                </div>
-            </div>
-              <input
-                  id="pac-input"
-                  class="controls"
-                  type="text"
-                  placeholder="Search Box"
-                />
           <div id="map"></div>
-
-
-        </div>
-    </section>
-
-</main>
-
+                />
+                  placeholder="Search Box"
+                  type="text"
+                  class="controls"
+                  id="pac-input"
+              <input
 <%- include ('_footer'); -%>

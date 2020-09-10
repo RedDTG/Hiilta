@@ -18051,6 +18051,38 @@ module.exports = g;
 
 /***/ }),
 
+/***/ "./src/js/api-tan.js":
+/*!***************************!*\
+  !*** ./src/js/api-tan.js ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var loading = true;
+var errored = false;
+var errors = null;
+var data = null;
+var requestURL = 'http://open.tan.fr/ewp/arrets.json/47,21661/-1,556754';
+console.log('DEBUT TAN');
+axios.get(requestURL, {
+  'Access-Control-Allow-Origin': '80.10.235.197'
+}).then(function (response) {
+  console.log('RESPONSE TAN');
+  console.log(response);
+  data = response.data;
+})["catch"](function (error) {
+  console.log('ERROR TAN');
+  console.log(error);
+  errors = error;
+  errored = true;
+})["finally"](function () {
+  loading = false;
+  console.log('DATA TAN');
+  console.log(data);
+});
+
+/***/ }),
+
 /***/ "./src/js/api_google.js":
 /*!******************************!*\
   !*** ./src/js/api_google.js ***!
@@ -18191,6 +18223,10 @@ __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.j
 __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
 
 __webpack_require__(/*! ./api_google */ "./src/js/api_google.js");
+
+window.axios = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'axios'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())); // require('./api-sncf');
+
+__webpack_require__(/*! ./api-tan */ "./src/js/api-tan.js");
 
 /***/ }),
 

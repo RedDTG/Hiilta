@@ -43,5 +43,9 @@ router.get("/tramway", function (req, res) {
 router.get("/api-sncf", function (req, res) {
     res.render("api-sncf");
 });
+
+router.get("/login", function (req, res) {
+    res.render("login");
+});
 module.exports = router;
 

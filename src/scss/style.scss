@@ -3,7 +3,7 @@
   flex-flow: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 80vh;
   font-size: 80px;
 }
 
@@ -54,4 +54,10 @@
 
 .form-group>label {
   font-size: 35px;
+}
+
+.bloc-vert {
+  background-color: #4EF56B;
+  width: 100%;
+  height: 10vh;
 }

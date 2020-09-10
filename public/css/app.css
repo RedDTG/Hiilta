@@ -11143,3 +11143,8 @@ a.text-hiilta:focus {
   height: 10vh;
 }
 
+#result_sncf {
+  font-size: 40px;
+  font-family: "Comic Sans MS";
+}
+

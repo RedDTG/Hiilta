@@ -12,6 +12,10 @@ router.get("/loading", function (req, res) {
     res.render("loading");
 });
 
+router.get("/map", function (req, res) {
+    res.render("map");
+});
+
 router.get("/welcome", function (req, res) {
     res.render("welcome");
 });

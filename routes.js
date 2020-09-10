@@ -20,6 +20,10 @@ router.get("/subscribe", function (req, res) {
     res.render("subscribe");
 });
 
+router.get("/api-tan", function (req, res) {
+    res.render("api-tan");
+});
+
 router.get("/transport", function (req, res) {
     res.render("transport");
 });
@@ -34,6 +38,10 @@ router.get("/velo", function (req, res) {
 
 router.get("/tramway", function (req, res) {
     res.render("tramway");
+});
+
+router.get("/api-sncf", function (req, res) {
+    res.render("api-sncf");
 });
 module.exports = router;
 

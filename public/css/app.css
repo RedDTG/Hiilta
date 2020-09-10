@@ -11077,21 +11077,15 @@ a.text-hiilta:focus {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  font-size: 80px;
 }
 
 .container > p {
-  font-size: 60px;
   font-family: "Righteous", cursive;
   margin: 1px;
   padding: 0;
   text-align: center;
-}
-
-.container > h1 {
-  font-size: 80px;
-  font-family: "Righteous", cursive;
-  margin: 0;
-  padding: 0;
+  font-size: 60px;
 }
 
 .container > img {

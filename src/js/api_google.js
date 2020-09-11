@@ -13,11 +13,26 @@ window.initMap = function() {
         },
         zoom: 13
     });
+    var directionsService = new google.maps.DirectionsService;
+    var directionsRenderer = new google.maps.DirectionsRenderer({
+        draggable: true,
+        map: map,
+        panel: document.getElementById('right-panel')
+    });
     new AutocompleteDirectionsHandler(map);
+
+
+    directionsRenderer.addListener('directions_changed', function () {
+        computeTotalDistance(directionsRenderer.getDirections());
+    });
+
 }
+
+
 
 class AutocompleteDirectionsHandler {
     constructor(map) {
+        var marker;
         this.map = map;
         this.originPlaceId = "";
         this.destinationPlaceId = "";
@@ -36,6 +51,7 @@ class AutocompleteDirectionsHandler {
         const destinationAutocomplete = new google.maps.places.Autocomplete(
             destinationInput
         ); // Specify just the place data fields that you need.
+
 
         destinationAutocomplete.setFields(["place_id"]);
         this.setupClickListener(
@@ -80,6 +96,7 @@ class AutocompleteDirectionsHandler {
         autocomplete.bindTo("bounds", this.map);
         autocomplete.addListener("place_changed", () => {
             const place = autocomplete.getPlace();
+            console.log(place);
 
             if (!place.place_id) {
                 window.alert("Please select an option from the dropdown list.");
@@ -88,12 +105,20 @@ class AutocompleteDirectionsHandler {
 
             if (mode === "ORIG") {
                 this.originPlaceId = place.place_id;
+
+
             } else {
                 this.destinationPlaceId = place.place_id;
             }
-
             this.route();
-        });
+
+            });
+
+
+
+            /*displayRoute(this.originPlaceId, this.destinationPlaceId, this.directionsService,
+                this.directionsRenderer );*/
+
     }
 
     route() {
@@ -102,9 +127,12 @@ class AutocompleteDirectionsHandler {
         }
 
         const me = this;
+        console.log(this.originPlaceId);
         this.directionsService.route(
             {
+
                 origin: {
+
                     placeId: this.originPlaceId
                 },
                 destination: {
@@ -113,6 +141,9 @@ class AutocompleteDirectionsHandler {
                 travelMode: this.travelMode
             },
             (response, status) => {
+                console.log(status);
+                console.log(this.originPlaceId);
+                console.log(this.route);
                 if (status === "OK") {
                     me.directionsRenderer.setDirections(response);
                 } else {
@@ -121,4 +152,31 @@ class AutocompleteDirectionsHandler {
             }
         );
     }
+}
+function computeTotalDistance(result) {
+    var total = 0;
+    var myroute = result.routes[0];
+    for (var i = 0; i < myroute.legs.length; i++) {
+        total += myroute.legs[i].distance.value;
+    }
+    total = total / 1000;
+    document.getElementById('total').innerHTML = total + ' km';
+}
+
+
+
+
+function displayRoute(origin, destination, service, display) {
+    service.route({
+        origin: origin,
+        destination: destination,
+        travelMode: 'DRIVING',
+        avoidTolls: true
+    }, function(response, status) {
+        if (status === 'OK') {
+            display.setDirections(response);
+        } else {
+            alert('Could not display directions due to: ' + status);
+        }
+    });
 }

@@ -20086,6 +20086,48 @@ module.exports = g;
 
 /***/ }),
 
+/***/ "./src/js/api-sncf.js":
+/*!****************************!*\
+  !*** ./src/js/api-sncf.js ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var loading = true;
+var errored = false;
+var errors = null;
+var data = {};
+var now = new Date();
+var annee = now.getFullYear();
+var mois = now.getMonth() + 1;
+var jour = now.getDate();
+var heure = now.getHours();
+var minute = now.getMinutes();
+var seconde = now.getSeconds();
+var API_URL = 'https://api.sncf.com/v1/coverage/sncf/stop_areas/stop_area:OCE:SA:87391003/departures?datetime=' + annee + mois + jour + heure + minute + seconde;
+var API_Gare = 'https://ressources.data.sncf.com/api/records/1.0/search/?dataset=referentiel-gares-voyageurs&q=&sort=pltf_departement_libellemin&facet=gare_agencegc_libelle&facet=gare_regionsncf_libelle&facet=gare_ug_libelle&facet=pltf_departement_libellemin&facet=pltf_segmentdrg_libelle';
+var requestURL = API_URL;
+var departs = "";
+axios.get(requestURL, {
+  headers: {
+    'Authorization': 'f30d872d-839e-4488-82eb-6e97db5e38f9'
+  }
+}).then(function (response) {
+  Object.assign(data, response.data);
+})["catch"](function (error) {
+  errors = error;
+  errored = true;
+})["finally"](function () {
+  loading = false;
+  data.departures.forEach(function (departure) {
+    var departureTime = departure.stop_date_time.departure_date_time.slice(9, 11) + 'h' + departure.stop_date_time.departure_date_time.slice(12, 14);
+    departs = departs + departure.display_informations.direction + " à " + departureTime + "<br>";
+  });
+  document.getElementById("result_sncf").innerHTML = departs;
+});
+
+/***/ }),
+
 /***/ "./src/js/api-tan.js":
 /*!***************************!*\
   !*** ./src/js/api-tan.js ***!
@@ -20100,7 +20142,7 @@ var data = null;
 var requestURL = 'http://open.tan.fr/ewp/arrets.json/47,21661/-1,556754';
 console.log('DEBUT TAN');
 axios.get(requestURL, {
-  'Access-Control-Allow-Origin': '80.10.235.197'
+  'Access-Control-Allow-Origin': '*'
 }).then(function (response) {
   console.log('RESPONSE TAN');
   console.log(response);
@@ -20306,11 +20348,12 @@ __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
 __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js");
 
-__webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
+__webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js"); //require('./api_google');
 
-__webpack_require__(/*! ./api_google */ "./src/js/api_google.js");
 
-window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js"); // require('./api-sncf');
+window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+
+__webpack_require__(/*! ./api-sncf */ "./src/js/api-sncf.js");
 
 __webpack_require__(/*! ./api-tan */ "./src/js/api-tan.js");
 
@@ -20328,15 +20371,14 @@ __webpack_require__(/*! ./api-tan */ "./src/js/api-tan.js");
 /***/ }),
 
 /***/ 0:
-/*!*********************************************************************!*\
-  !*** multi ./src/js/app.js ./src/js/api_google ./src/scss/app.scss ***!
-  \*********************************************************************/
+/*!*************************************************!*\
+  !*** multi ./src/js/app.js ./src/scss/app.scss ***!
+  \*************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\EPSI\workshopjs\src\js\app.js */"./src/js/app.js");
-__webpack_require__(/*! D:\EPSI\workshopjs\src\js\api_google */"./src/js/api_google.js");
-module.exports = __webpack_require__(/*! D:\EPSI\workshopjs\src\scss\app.scss */"./src/scss/app.scss");
+__webpack_require__(/*! D:\Users\AntoineD\Documents\EPSI\B2\Workshop\hiilta-app\src\js\app.js */"./src/js/app.js");
+module.exports = __webpack_require__(/*! D:\Users\AntoineD\Documents\EPSI\B2\Workshop\hiilta-app\src\scss\app.scss */"./src/scss/app.scss");
 
 
 /***/ })

@@ -7,7 +7,7 @@ let requestURL = 'http://open.tan.fr/ewp/arrets.json/47,21661/-1,556754';
 console.log('DEBUT TAN')
 
 axios.get(requestURL, {
-    'Access-Control-Allow-Origin': '80.10.235.197',
+    'Access-Control-Allow-Origin': '*',
 })
     .then(response => {
         console.log('RESPONSE TAN')
